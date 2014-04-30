@@ -1,0 +1,28 @@
+-
+  hosts: local
+  connection: local
+  sudo: yes
+  tasks:
+    - name: Add netengine user
+      user: name=netengine shell=/bin/bash
+
+    - name: Give netengine user passwordless sudo
+      lineinfile: "dest=/etc/sudoers insertafter=EOF line='netengine ALL=(ALL) NOPASSWD: ALL' regexp='netengine' state=present"
+
+    - name: Update sshd_config to allow public key access
+      copy: src=/provision/files/sshd_config dest=/etc/ssh/sshd_config
+      notify:
+        - restart ssh
+
+    - name: Creates .ssh directory for netengine user
+      file: path=/home/netengine/.ssh state=directory
+      sudo_user: netengine
+
+    - name: Download NE team public keys to netengine user
+      get_url: url=https://gist.githubusercontent.com/dansowter/7e04518c0e1dedc85e78/raw/a0449efefba2ebd539b158b13a3b17931b0b1a2a/ne_team_public_keys dest=/home/netengine/.ssh/authorized_keys mode=0440 force=yes
+      sudo_user: netengine
+
+  handlers:
+    - name: restart ssh
+      service: name=ssh state=restarted
+
