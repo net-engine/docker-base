@@ -1,0 +1,6 @@
+{
+  "config_dir": "/consul/config",
+  "data_dir": "/consul/data",
+  "log_level": "INFO",
+  "start_join": ["host-os-1.node.consul"]
+}

@@ -1,0 +1,5 @@
+Host *.consul
+  User netengine
+  ForwardAgent yes
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null

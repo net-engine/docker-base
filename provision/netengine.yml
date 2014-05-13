@@ -15,7 +15,7 @@
         - zsh
 
     - name: Add netengine user
-      user: name=netengine shell=/bin/zsh
+      user: name=netengine shell=/bin/zsh uid=1111
 
     - name: Pull down oh-my-zsh for netengine user
       git: >
@@ -34,6 +34,13 @@
     - name: Creates .ssh directory for netengine user
       file: path=/home/netengine/.ssh state=directory
       sudo_user: netengine
+
+    - name: Update ssh_config to prevent hostkey problems while shelling between containers.
+      copy: >
+        src=/provision/files/ssh_config
+        dest=/home/netengine/.ssh/config
+        owner=netengine
+        group=netengine
 
     - name: Give netengine user passwordless sudo
       lineinfile: "dest=/etc/sudoers insertafter=EOF line='netengine ALL=(ALL) NOPASSWD: ALL' regexp='netengine' state=present"

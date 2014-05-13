@@ -19,6 +19,9 @@ RUN cp /provision/local /etc/ansible/hosts
 # Configure netengine user
 RUN ansible-playbook /provision/netengine.yml
 
+# Configure consul
+RUN ansible-playbook /provision/consul.yml
+
 # Clean up
 RUN rm -rf /provision
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

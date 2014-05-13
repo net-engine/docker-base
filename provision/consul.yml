@@ -1,0 +1,55 @@
+-
+  hosts: local
+  connection: local
+  sudo: yes
+  tasks:
+    - name: Install required apt packages
+      apt: pkg={{ item }} state=present
+      with_items:
+        - dnsutils
+        - unzip
+
+    - name: Copy /consul folder
+      copy: >
+        src=consul
+        dest=/
+        owner=netengine
+        group=netengine
+
+    - name: Download consul
+      get_url: >
+        url=https://dl.bintray.com/mitchellh/consul/0.2.0_linux_amd64.zip
+        dest=/consul
+        owner=netengine
+        group=netengine
+        sha256sum=2802ce8e173ee37e1a1e992ba230963e09d4b41ce4ac60c1222714c036787b4f
+      register: get_url_result
+
+    - name: Unzip consul
+      command: unzip 0.2.0_linux_amd64.zip chdir=/consul creates=/consul/consul
+      when: get_url_result.changed
+
+    - name: Link consul executable
+      file: >
+        src=/consul/consul
+        dest=/usr/bin/consul
+        owner=netengine
+        group=netengine
+        state=link
+        mode=0555
+
+    - name: Create service folder for consul
+      file: >
+        state=directory
+        path=/etc/service/consul
+        owner=root
+        group=root
+
+    - name: Link consul service run definition
+      file: >
+        src=/consul/run
+        path=/etc/service/consul/run
+        owner=root
+        group=root
+        state=link
+        mode=0555
