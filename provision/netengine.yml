@@ -14,6 +14,12 @@
         - git
         - zsh
 
+    - name: Download jq
+      get_url: >
+        url=http://stedolan.github.io/jq/download/linux64/jq
+        dest=/sbin/jq
+        mode=0555
+
     - name: Add netengine user
       user: name=netengine shell=/bin/zsh uid=1111
 

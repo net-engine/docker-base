@@ -1,25 +1,21 @@
 # http://phusion.github.io/baseimage-docker/
-FROM phusion/baseimage:0.9.9
+FROM phusion/baseimage:0.9.10
 MAINTAINER team@netengine.com.au
 
 ENV HOME /root
 
 # Install Ansible
-RUN echo "deb http://ppa.launchpad.net/rquillo/ansible/ubuntu precise main" >> /etc/apt/sources.list
-RUN echo "deb-src http://ppa.launchpad.net/rquillo/ansible/ubuntu precise main" >> /etc/apt/sources.list
+RUN echo "deb http://ppa.launchpad.net/rquillo/ansible/ubuntu trusty main" >> /etc/apt/sources.list
+RUN echo "deb-src http://ppa.launchpad.net/rquillo/ansible/ubuntu trusty main" >> /etc/apt/sources.list
 RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 5504681D
 RUN apt-get update
 RUN apt-get install -y python-apt
 RUN apt-get install -y ansible
 
-# Copy local ansible playbooks
+# Configure the base
 ADD provision /provision
 RUN cp /provision/local /etc/ansible/hosts
-
-# Configure netengine user
 RUN ansible-playbook /provision/netengine.yml
-
-# Configure consul
 RUN ansible-playbook /provision/consul.yml
 
 # Clean up
