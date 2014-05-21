@@ -5,6 +5,7 @@ DISABLE_CORRECTION="true"
 plugins=(git history-substring-search)
 
 source $ZSH/oh-my-zsh.sh
+source /consul/variables
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export LANG=en_US.UTF-8
