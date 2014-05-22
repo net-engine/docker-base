@@ -1,2 +1,2 @@
 #!/bin/sh
-exec consul agent -config-file /consul/config/agent.json
+exec consul agent -config-dir /consul/config
