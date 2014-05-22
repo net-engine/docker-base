@@ -1,2 +1,3 @@
-#!/bin/sh
+#!/bin/zsh
+
 exec consul agent -config-dir /consul/config
