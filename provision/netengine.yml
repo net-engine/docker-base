@@ -53,7 +53,7 @@
 
     - name: Download NE team public keys to netengine user
       get_url: >
-        url=https://gist.githubusercontent.com/dansowter/7e04518c0e1dedc85e78/raw/a0449efefba2ebd539b158b13a3b17931b0b1a2a/ne_team_public_keys
+        url=https://raw.githubusercontent.com/net-engine/dot-ssh/master/authorized_keys
         dest=/home/netengine/.ssh/authorized_keys
         mode=0600
         force=yes
